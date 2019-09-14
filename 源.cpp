@@ -1,112 +1,142 @@
-////编写一个函数，设计一个满足下边要求的CDate类，用数据进行调试并输出结果
-////（1）用日/月/年格式输出日期。
-////（2）可进行日期加一天的操作
-////（3）设置日期。
+////编写一个程序，设计一个点类Point和一个距离类Distance，
+////后者的数据成员包括了Point类的两个对象p1和p2，并计算这两个点的距离。
 //#include<iostream>
+//#include<math.h>
 //using namespace std;
-//class CDate
+//class Point
 //{
 //private:
-//	int m_nDay;
-//	int m_nMonth;
-//	int m_nYear;
+//	int X, Y;
 //public:
-//	CDate();//默认构造函数
-//	CDate(int, int, int);//重载构造函数
-//	void Display();//输出日期
-//	void Adddate();//返回加1后的日期
-//	void Setdate(int,int,int);//设置日期
-//	~CDate();//析构函数
+//	Point(int x = 0, int y = 0) { X = x; Y = y; }
+//	Point(Point &p);
+//	int GetX() { return X; }
+//	int GetY() { return Y; }
+//	void disp() { cout << "(" << X << "," << Y << ")"; }
+//};
+//Point::Point(Point &p)
+//{
+//	X = p.X;
+//	Y = p.Y;
+//	cout << "Point复制构造函数被调用" << endl;
+//}
+//
+//class Distance
+//{
 //private:
-//	bool Isleapyear();//判断年份是不是闰年
+//	Point p1, p2;
+//	double dist;
+//public:
+//	Distance(Point xp1, Point xp2);
+//	double GetDis(){ return dist; }
 //};
 //
-//CDate::CDate()
-//{}
-//CDate::CDate(int year, int month, int day)
+//Distance::Distance(Point xp1, Point xp2) :p1(xp1), p2(xp2)
 //{
-//	m_nDay = day;
-//	m_nMonth = month;
-//	m_nYear = year;
+//	cout << "Distance构造函数被调用" << endl;
+//	double x = double(p1.GetX() - p2.GetX());
+//	double y = double(p1.GetY() - p2.GetY());
+//	dist = sqrt(x*x + y*y);
 //}
-//void CDate::Display()
+//
+//void main()
 //{
-//	cout << m_nYear << "年" << m_nMonth << "月" << m_nDay << "日" << endl;
+//	Point p1(1, 2), p2(8, 6);
+//	Distance d(p1, p2);
+//	p1.disp();
+//	cout << "和";
+//	p2.disp();
+//	cout << "两个点的距离为：" << d.GetDis() << endl;
+//	system("Pause");
 //}
-//void CDate::Adddate()
+////编写一个程序，有若干教师和研究生，每个研究生有且仅有一名指导教师，每个指导教师
+////可以带若干名研究生，建立一个教师数组和研究生对象数组，通过相关函数为每个研究生
+////指定指导老师，最后输出所有研究生的完整信息和所有教师的完整信息
+//#include<iostream>
+//#include<string.h>
+//using namespace std;
+//class Graduate;
+//const int Max = 6;
+//class Teacher
 //{
-//	m_nDay++;
-//	if (Isleapyear())
+//	int tno;
+//	char tname[10];
+//	char prof[8];
+//	int num;
+//	Graduate *sp[Max];
+//public:
+//	Teacher() {};
+//	Teacher(int n, char na[], char pr[])
 //	{
-//		if (m_nMonth == 2 && m_nDay == 30)
-//		{
-//			m_nMonth++;
-//			m_nDay = 1;
-//			return;
-//		}
+//		tno = n;
+//		strcpy(tname,na);
+//		strcpy(prof, pr);
+//		num = 0;
 //	}
-//	else
+//	void addgraduate(Graduate *gp)
 //	{
-//		if (m_nMonth == 2 && m_nDay == 29)
-//		{
-//			m_nMonth++;
-//			m_nDay = 1;
-//			return;
-//		}
+//		sp[num] = gp;
+//		num++;
 //	}
-//	if (m_nDay > 31)
+//	void Tdisp()
 //	{
-//		if (m_nMonth == 12)
-//		{
-//			m_nYear++;
-//			m_nMonth = 1;
-//			m_nYear = 1;
-//		}
-//		else
-//		{
-//			m_nMonth++;
-//			m_nDay = 1;
-//		}
+//		cout << tname << "(" << tno << "," << prof << ")" << endl;
 //	}
-//	else if (m_nDay == 31)
+//	void Tdispall();//输出一个教师的完整信息
+//};
+//
+//class Graduate
+//{
+//	int sno;
+//	char sname[10];
+//	Teacher t;
+//public:
+//	Graduate(int n, char na[])
 //	{
-//		if (m_nMonth == 4 || m_nMonth == 6 || m_nMonth == 9 || m_nMonth == 11)
-//		{
-//			m_nMonth++;
-//			m_nDay = 1;
-//		}
+//		sno = n;
+//		strcpy(sname, na);
 //	}
-//}
-//void CDate::Setdate(int year,int month,int day)
+//	void setteacher(Teacher &t1)
+//	{
+//		t1.addgraduate(this);
+//		t = t1;
+//	}
+//	void Gdisp()
+//	{
+//		cout << "学号：" << sno << "姓名：" << sname << endl;
+//	}
+//	void Gdispall()
+//	{
+//		cout << "学号：" << sno << "姓名：" << sname << "导师：";
+//		t.Tdisp();
+//	}
+//};
+//
+//void Teacher::Tdispall()
 //{
-//	m_nDay = day;
-//	m_nMonth = month;
-//	m_nYear = year;
-//}
-//CDate::~CDate()
-//{
-//}
-//bool CDate::Isleapyear()
-//{
-//	bool bLeap;
-//	if (m_nYear % 4 != 0) bLeap = false;
-//	else if (m_nYear % 100 != 0) bLeap = true;
-//	else if (m_nYear % 400) bLeap = false;
-//	return bLeap;
+//	int i;
+//	cout << " " << tname << "(" << tno << "," << prof << ")" << endl;
+//	cout << " 指导研究生人数：" << num << endl;
+//	for (i = 0; i < num; i++)
+//		sp[i]->Gdisp();
 //}
 //void main()
 //{
-//	CDate date;
-//	int y, m, d;
-//	cout << "年月日" << endl;
-//	cin >> y >> m >> d;
-//	date.Setdate(y, m, d);
-//	cout << "当前日期:";
-//	date.Display();
-//	date.Adddate();
-//	cout << "当前日期加1:";
-//	date.Display();
+//	int i;
+//	Teacher t[3] = { Teacher(101, "王贺", "教授"), Teacher(102, "陈粒", "副教授"), 
+//		Teacher(103, "陈建华", "教授") };
+//	Graduate g[5] = { Graduate(201, "张三"), Graduate(202, "李四"), Graduate(203, "王五"),
+//		Graduate(204, "赵六"), Graduate(205, "刘琦") };
+//	g[0].setteacher(t[0]);
+//	g[1].setteacher(t[1]);
+//	g[3].setteacher(t[2]);
+//	g[4].setteacher(t[1]);
+//	g[2].setteacher(t[0]);
+//	cout << "研究生列表" << endl;
+//	for (i = 0; i < 5; i++)
+//		g[i].Gdispall();
+//	cout << "教师列表" << endl;
+//	for (i = 0; i < 3; i++)
+//		t[i].Tdispall();
 //	system("pause");
 //}
-
-
