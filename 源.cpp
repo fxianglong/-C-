@@ -1,142 +1,189 @@
-////编写一个程序，设计一个点类Point和一个距离类Distance，
-////后者的数据成员包括了Point类的两个对象p1和p2，并计算这两个点的距离。
+////设计一个程序，其中有3个类CBank、BBank和GBank，分别为中国银行类，工商银行类和
+////农业银行类。每个类都都包含一个私有数据balance用于存放储户在该行的存款数，另有
+////一个友元函数total用于计算储户在这三家银行中的存款数。
 //#include<iostream>
-//#include<math.h>
 //using namespace std;
-//class Point
+//class BBank;
+//class GBank;
+//class CBank
 //{
-//private:
-//	int X, Y;
+//	int balance;
 //public:
-//	Point(int x = 0, int y = 0) { X = x; Y = y; }
-//	Point(Point &p);
-//	int GetX() { return X; }
-//	int GetY() { return Y; }
-//	void disp() { cout << "(" << X << "," << Y << ")"; }
-//};
-//Point::Point(Point &p)
-//{
-//	X = p.X;
-//	Y = p.Y;
-//	cout << "Point复制构造函数被调用" << endl;
-//}
-//
-//class Distance
-//{
-//private:
-//	Point p1, p2;
-//	double dist;
-//public:
-//	Distance(Point xp1, Point xp2);
-//	double GetDis(){ return dist; }
+//	CBank()
+//	{
+//		balance = 0;
+//	}
+//	CBank(int b)
+//	{
+//		balance = b;
+//	}
+//	void getbalance()
+//	{
+//		cout << "输入中国银行存款数：";
+//		cin >> balance;
+//	}
+//	void disp()
+//	{
+//		cout << "中国银行存款数：" << balance << endl;
+//	}
+//	friend void total(CBank, BBank, GBank);
 //};
 //
-//Distance::Distance(Point xp1, Point xp2) :p1(xp1), p2(xp2)
+//class BBank
 //{
-//	cout << "Distance构造函数被调用" << endl;
-//	double x = double(p1.GetX() - p2.GetX());
-//	double y = double(p1.GetY() - p2.GetY());
-//	dist = sqrt(x*x + y*y);
-//}
-//
-//void main()
-//{
-//	Point p1(1, 2), p2(8, 6);
-//	Distance d(p1, p2);
-//	p1.disp();
-//	cout << "和";
-//	p2.disp();
-//	cout << "两个点的距离为：" << d.GetDis() << endl;
-//	system("Pause");
-//}
-////编写一个程序，有若干教师和研究生，每个研究生有且仅有一名指导教师，每个指导教师
-////可以带若干名研究生，建立一个教师数组和研究生对象数组，通过相关函数为每个研究生
-////指定指导老师，最后输出所有研究生的完整信息和所有教师的完整信息
-//#include<iostream>
-//#include<string.h>
-//using namespace std;
-//class Graduate;
-//const int Max = 6;
-//class Teacher
-//{
-//	int tno;
-//	char tname[10];
-//	char prof[8];
-//	int num;
-//	Graduate *sp[Max];
+//	int balance;
 //public:
-//	Teacher() {};
-//	Teacher(int n, char na[], char pr[])
+//	BBank()
 //	{
-//		tno = n;
-//		strcpy(tname,na);
-//		strcpy(prof, pr);
-//		num = 0;
+//		balance = 0;
 //	}
-//	void addgraduate(Graduate *gp)
+//	BBank(int b)
 //	{
-//		sp[num] = gp;
-//		num++;
+//		balance = b;
 //	}
-//	void Tdisp()
+//	void getbalance()
 //	{
-//		cout << tname << "(" << tno << "," << prof << ")" << endl;
+//		cout << "请输入工商银行存款数：";
+//		cin >> balance;
 //	}
-//	void Tdispall();//输出一个教师的完整信息
+//	void disp()
+//	{
+//		cout << "工商银行存款数为：" << balance<<endl;
+//	}
+//	friend void total(CBank, BBank, GBank);
 //};
-//
-//class Graduate
+//class GBank
 //{
-//	int sno;
-//	char sname[10];
-//	Teacher t;
+//	int balance;
 //public:
-//	Graduate(int n, char na[])
+//	GBank()
 //	{
-//		sno = n;
-//		strcpy(sname, na);
+//		balance = 0;
 //	}
-//	void setteacher(Teacher &t1)
+//	GBank(int b)
 //	{
-//		t1.addgraduate(this);
-//		t = t1;
+//		balance = b;
 //	}
-//	void Gdisp()
+//	void getbalance()
 //	{
-//		cout << "学号：" << sno << "姓名：" << sname << endl;
+//		cout << "请输入农业银行存款数：";
+//		cin >> balance;
 //	}
-//	void Gdispall()
+//	void disp()
 //	{
-//		cout << "学号：" << sno << "姓名：" << sname << "导师：";
-//		t.Tdisp();
+//		cout << "农业银行存款数为：" << balance << endl;
 //	}
+//	friend void total(CBank, BBank, GBank);
 //};
-//
-//void Teacher::Tdispall()
+//void total(CBank A, BBank B, GBank C)
 //{
-//	int i;
-//	cout << " " << tname << "(" << tno << "," << prof << ")" << endl;
-//	cout << " 指导研究生人数：" << num << endl;
-//	for (i = 0; i < num; i++)
-//		sp[i]->Gdisp();
+//	cout << "总存款数：" << A.balance + B.balance + C.balance << endl;
 //}
 //void main()
 //{
-//	int i;
-//	Teacher t[3] = { Teacher(101, "王贺", "教授"), Teacher(102, "陈粒", "副教授"), 
-//		Teacher(103, "陈建华", "教授") };
-//	Graduate g[5] = { Graduate(201, "张三"), Graduate(202, "李四"), Graduate(203, "王五"),
-//		Graduate(204, "赵六"), Graduate(205, "刘琦") };
-//	g[0].setteacher(t[0]);
-//	g[1].setteacher(t[1]);
-//	g[3].setteacher(t[2]);
-//	g[4].setteacher(t[1]);
-//	g[2].setteacher(t[0]);
-//	cout << "研究生列表" << endl;
-//	for (i = 0; i < 5; i++)
-//		g[i].Gdispall();
-//	cout << "教师列表" << endl;
-//	for (i = 0; i < 3; i++)
-//		t[i].Tdispall();
+//	CBank X;
+//	BBank Y;
+//	GBank Z;
+//	X.disp();
+//	Y.disp();
+//	Z.disp();
+//	X.getbalance();
+//	Y.getbalance();
+//	Z.getbalance();
+//	total(X, Y, Z);
 //	system("pause");
 //}
+////设计一个整数数序类NumSet,用于输入一序列整数，其中的元素都是递增序列的，并且不包含相同的元素
+////另外设计一个友元函数，返回两个这样的整数数序的合并结果，要求合并结果也是一个有序序列且不包含
+////重复的元素。
+//#include<iostream>
+//using namespace std;
+//const int MAX = 20;
+//class NumSet
+//{
+//	int count;
+//	int a[MAX];
+//public:
+//	NumSet()
+//	{
+//		count = 0;
+//	}
+//	void addnum(int n)
+//	{
+//		int i = 0, j;
+//		while (i < count && n >= a[i]) i++;
+//		if (n == a[i - 1]) return;
+//		for (j = count; j >= i; j--)
+//			a[j + 1] = a[j];
+//		a[i] = n;
+//		count++;
+//	}
+//	void disp()
+//	{
+//		for (int i = 0; i < count; i++)
+//			cout << a[i]<<" ";
+//		cout << endl;
+//	}
+//	int geti(int i)
+//	{
+//		return a[i];
+//	}
+//	friend NumSet unionset(NumSet s1, NumSet s2)
+//	{
+//		NumSet s;
+//		int i = 0, j = 0;
+//		while (i < s1.count&&j<s2.count)
+//		{
+//			int v1 = s1.geti(i);
+//			int v2 = s2.geti(j);
+//			if (v1 < v2)
+//			{
+//				s.addnum(v1);
+//				i++;
+//			}
+//			else if (v1>v2)
+//			{
+//				s.addnum(v2);
+//				j++;
+//			}
+//			else {
+//				s.addnum(v1);
+//				i++; j++;
+//			}
+//		}
+//		while (i < s1.count)
+//		{
+//			int v1 = s1.geti(i);
+//			s.addnum(v1);
+//			i++;
+//		}
+//		while (j < s2.count)
+//		{
+//			int v2 = s2.geti(j);
+//			s.addnum(v2);
+//			j++;
+//		}
+//		return s;
+//	}
+//};
+//void main()
+//{
+//	NumSet set1, set2, set3;
+//	set1.addnum(1);
+//	set1.addnum(9);
+//	set1.addnum(5);
+//	set1.addnum(9);
+//	cout << "数序一：";
+//	set1.disp();
+//	set2.addnum(8);
+//	set2.addnum(2);
+//	set2.addnum(6);
+//	set2.addnum(5);
+//	cout << "数序二：";
+//	set2.disp();
+//	set3 = unionset(set1, set2);
+//	cout << "合并结果：";
+//	set3.disp();
+//	system("pause");
+//}
+//
