@@ -1,63 +1,97 @@
-//运算符重载
 #include<iostream>
 using namespace std;
-class Complex
+//class MyClass1
+//{
+//	int n;
+//public:
+//	MyClass1(){}
+//	MyClass1(int m){ n = m; }
+//	MyClass1 operator +(MyClass1 s)
+//	{
+//		MyClass1 tmp;
+//		tmp.n = n + s.n;
+//		return tmp;
+//	}
+//	void disp()
+//	{
+//		cout << "n=" << n << endl;
+//	}
+//};
+//
+//void main()
+//{
+//	MyClass1 s1(10), s2(20), s3;
+//	cout << "s1:"; s1.disp();
+//	cout << "s2:"; s2.disp();
+//	s3 = s1 + s2;
+//	cout << "s3:"; s3.disp();
+//	system("pause");
+//}
+//class MyClass
+//{
+//	int n;
+//public:
+//	MyClass(int i) { n = i; }
+//	int operator ++() { n++; return n; }	//++运算符重载
+//	void display()
+//	{
+//		cout << "n=" << n << endl;
+//	}
+//};
+//
+//void main()
+//{
+//	MyClass A(5);
+//	A++;
+//	A.display();
+//	system("pause");
+//}
+//class MyClass2
+//{
+//	int n;
+//public:
+//	MyClass2(int i){ n = i; }
+//	int operator ++(){ n++; return n; }
+//	int operator ++(int){ n += 2; return n; }
+//	void display()
+//	{
+//		cout << "n=" << n << endl;
+//	}
+//};
+//
+//void main()
+//{
+//	MyClass2 A(5), B(5);
+//	A++;
+//	++B;
+//	A.display();
+//	B.display();
+//	system("pause");
+//}
+class PClass
 {
-	float a;
-	float b;
+	int n; double m;
 public:
-	Complex(){}
-	Complex(float a1, float b1) :a(a1), b(b1){}
-	Complex operator+(Complex &);
-	friend Complex operator-(Complex &, Complex &);
+	PClass *operator->()
+	{
+		return this;
+	}
+	void setvalue(int n1, double m1)
+	{
+		n = n1; m = m1;
+	}
 	void disp()
 	{
-		cout << a;
-		if (b >= 0) cout << "+";
-		cout << b << "i" << endl;
+		cout << "n=" << n << ",m=" << m<<endl;
 	}
 };
-Complex Complex::operator+(Complex &c)
-{
-	Complex tmp;
-	tmp.a = a + c.a;
-	tmp.b = b + c.b;
-	return tmp;
-}
-Complex operator -(Complex &c1, Complex &c2)
-{
-	Complex tmp;
-	tmp.a = c1.a - c2.a;
-	tmp.b = c1.b - c2.b;
-	return tmp;
-}
+
 void main()
 {
-	Complex s1(2, 5), s2(1, 10), s3, s4;
-	s3 = s1 + s2;
-	s4 = s1 - s2;
-	cout << "s1:"; s1.disp();
-	cout << "s2:"; s2.disp();
-	cout << "s3:"; s3.disp();
-	cout << "s4:"; s4.disp();
+	PClass s;
+	s->setvalue(10, 20.5);
+	s->disp();
+	s.setvalue(20, 89.8);
+	s.disp();
 	system("pause");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
