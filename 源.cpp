@@ -1,138 +1,108 @@
 //#include<iostream>
 //using namespace std;
 //template <class T>
-//T min(T x, T y)
+//class Array
 //{
-//	if (x < y) return x;
-//	else return y;
-//}
-//void main()
-//{
-//	int n1 = 2, n2 = 10;
-//	double d1 = 2.3, d2 = 2.2;
-//	cout << "较小整数" << min(n1, n2) << endl;
-//	cout << "较小实数" << min(d1, d2) << endl;
-//	system("pause");
-//}
-////编写一个对具有n个元素的数组a[]求最小值的程序，要求将求最小值的函数设计成函数模板
-//#include<iostream>
-//using namespace std;
-//template <class T>
-//T ArrayMin(T a[], int n)
-//{
-//	int i;
-//	T ArrayMin = a[0];
-//	for (i = 0; i < n;i++)
-//	if (ArrayMin>a[i])
-//		ArrayMin = a[i];
-//	return ArrayMin;
-//}
-//void main()
-//{
-//	int a[] = { 2, 4, 10, 6, 5, 3, 2 };
-//	double b[] = { 2.3, 5.4, 3.2 };
-//	cout << "a数组最小的数：" << ArrayMin(a, sizeof(a) / sizeof(a[0])) << endl;
-//	cout << "b数组最小的数：" << ArrayMin(b, sizeof(b) / sizeof(b[0])) << endl;
-//	system("pause");
-//}
-//#include<iostream>
-//using namespace std;
-//class MyClass
-//{
-//	int x, y;
+//	int size;
+//	T *aptr;
 //public:
-//	MyClass(int x1, int y1)
+//	Array(int slots = 1)
 //	{
-//		x = x1; y = y1;
+//		size = slots;
+//		aptr = new T[slots];
 //	}
-//	int getx(){ return x; }
-//	int gety(){ return y; }
-//	int operator<(MyClass &c);
+//	void fill_Array();
+//	void disp_Array();
+//	~Array()
+//	{
+//		delete[] aptr;
+//	}
 //};
-//
-//int MyClass::operator<(MyClass &c)
+//template <class T>
+//void Array<T>::fill_Array()
 //{
-//	if (x < c.x&&y < c.y)
-//		return 1;
-//	else return 0;
+//	cout << "(输入：" << size << "个数据)" << endl;
+//	for (int i = 0; i < size; i++)
+//	{
+//		cout << "第" << i + 1 << "个数据:";
+//		cin >> aptr[i];
+//	}
 //}
-//template<class T>
-//T &min(T &o1, T &o2)
+//template <class T>
+//void Array<T>::disp_Array()
 //{
-//	if (o1 < o2)
-//		return o1;
-//	else return o2;
+//	for (int i = 0; i < size; i++)
+//		cout << aptr[i] << " ";
+//	cout << endl;
 //}
 //void main()
 //{
-//	MyClass s1(5, 9);
-//	MyClass s2(6, 8);
-//	MyClass s3=min(s1, s2);
-//	cout << "较小的坐标：(" << s3.getx() << "," << s3.gety() << "," << ")";
+//	Array<char> ac(5);//Array<char>为类模板，ac(5)定义模板类的对象
+//	cout << "填充一个字符数组";
+//	ac.fill_Array();
+//	cout << "数组的内容是：";
+//	ac.disp_Array();
+//	Array<double> ad(4);
+//	cout << "填充一个字符数组";
+//	ad.fill_Array();
+//	cout << "数组的内容是：";
+//	ad.disp_Array();
 //	system("pause");
 //}
+
+
 //#include<iostream>
 //using namespace std;
 //template <class T>
-//void dispArr(T *arr, int n)
+//class A
 //{
-//	int i;
-//	for (i = 0; i < n; i++)
-//		cout << arr[i] << " ";
-//	cout << endl;
-//}
+//	T m;
+//	static T n;
+//public:
+//	A(T a):m(a) { n += m; }
+//	void disp(){ cout << "m=" << m << ",n=" << n << endl; }
+//};
 //template <class T>
-//void dispArr(T *arr, int i, int j)
-//{
-//	int k;
-//	for (k = i; k < j; k++)
-//		cout << arr[k] << " ";
-//	cout << endl;
-//}
+//T A<T>::n = 0;
 //void main()
 //{
-//	int a[] = { 1, 2, 4, 6, 8, 5, 3, 5, 8, 2 };
-//	dispArr(a, sizeof(a) / sizeof(a[0]));
-//	dispArr(a, 1, 7);
+//	A<int> a(2), b(3);
+//	a.disp();
+//	b.disp();
+//	A<double> c(1.2), d(4.6);
+//	c.disp();
+//	d.disp();
 //	system("pause");
 //}
-//
+
 #include<iostream>
 using namespace std;
-template<class T>
-T max(T x, T y)
+template<class T,int size=10>
+class A
 {
-	cout << "函数模板max=";
-	return (x > y) ? x : y;
-}
-int max(int x, int y, int z = 0)
-{
-	int m;
-	cout << "int重载函数：max=";
-	if (z == 0) return (x > y) ? x : y;
-	else
+	T *p;
+public:
+	A(T *q)
 	{
-			m = (x > y) ? x : y;
-			return (m > z) ? m : z;
+		p = new T[size];
+		for (int i = 0; i < size; i++)
+			p[i] = *q++;
 	}
-}
-char max(char x, char y)
-{
-	cout << "char重载函数：max=";
-	return (x > y) ? x : y;
-}
+	void disp()
+	{
+		int i; 
+		for (int i = 0; i < size; i++)
+			cout << p[i];
+		cout << endl;
+	}
+};
 void main()
 {
-	int i1 = 2, i2 = 3, i3 = 5;
-	char c1 = 'a', c2 = 'c', c3 = 'd';
-	double f1 = 2.321, f2 = 3.133;
-	cout << max(i1, i2) << endl;
-	cout << max(i1, i2, i3) << endl;
-	cout << max(c1, c2) << endl;
-	cout << (char)max(c1, c2, c3) << endl;
-	cout << max(f1, f2) << endl;
+	int a[] = { 1, 2, 4, 6, 8, 9, 5, 3 };
+	char *b = "kiuygtrmjnhg";
+	A<int, 5> s1(a);
+	cout << "a:"; s1.disp();
+	A<char> s2(b);
+	cout << "b:"; s2.disp();
 	system("pause");
 }
-
-
-
