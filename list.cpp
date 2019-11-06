@@ -176,7 +176,7 @@ namespace fxl
 		T _val;
 	};
 
-	template<class T,class Ref,class Ptr>
+	template<class T, class Ref, class Ptr>
 	class ListIterator
 	{
 		typedef ListNode<T>* PNode;
@@ -219,7 +219,7 @@ namespace fxl
 	};
 
 
-	template<class T,class Ref,class Ptr,class Iterator>
+	template<class T, class Ref, class Ptr, class Iterator>
 	class ListReverseIterator
 	{
 		typedef ListReverseIterator<T, Ref, Ptr, Iterator>Self;
@@ -247,7 +247,7 @@ namespace fxl
 		Self operator++(int)
 		{
 			Iterator temp(*this);
-			--_it; 
+			--_it;
 			return temp;
 		}
 		Self operator--()
@@ -269,7 +269,7 @@ namespace fxl
 		{
 			return _it == s._it;
 		}
-	private :
+	private:
 		Iterator _it;
 	};
 
@@ -280,11 +280,88 @@ namespace fxl
 		typedef Node* PNode;
 	public:
 		typedef ListIterator<T, T&, T*> Iterator;
-		typedef ListIterator<T, const T&, const T&> ConstIterator;
+		typedef ListIterator<T, const T&, const T*> ConstIterator;
 		typedef ListReverseIterator<T, T&, T*, Iterator>ReverseIterator;
 		typedef ListReverseIterator<T, const T&, const T*, ConstIterator>ConstReverseIterator;
 	public:
+		List()
+		{
+			CreateHead();
+		}
+		List(int n, const T& value = T())
+		{
+			CreateHead();
+			for (int i = 0; i < n; i++)
+				PushBack(value);
+		}
+		template<class Iterator>
+		List(Iterator first, Iterator last)
+		{
+			CreateHead();
+			while (first != last)
+			{
+				PushBack(*first);
+				first++;
+			}
+		}
+		List(const List<T>&l)
+		{
+			CreateHead();
+			List<T> temp = (l.CBegin(), l.CEnd());
+			this->Swap(temp);
+		}
+		List<T>& operator=(const List<T>& l)
+		{
+			if (this != &l)
+			{
+				List<T> temp(l);
+				this->Swap(temp);
+			}
+			return *this;
+		}
+		~List()
+		{
+			Clear();
+			delete _pHead;
+			_pHead = nullptr;
+		}
+		Iterator Begin()
+		{
+			return Iterator(_pHead->_pNext);
+		}
+		Iterator End()
+		{
+			return Iterator(_pHead);
+		}
+		ReverseIterator RBegin()
+		{
+			return ReverseIterator(End());
+		}
+		ReverseIterator REnd()
+		{
+			return ReverseIterator(Begin());
+		}
+		ConstIterator CBegin()const
+		{
+			return ConstIterator(_pHead->_pNext);
+		}
+		ConstIterator CEnd()const
+		{
+			return ConstIterator(_pHead);
+		}
+		ConstReverseIterator CRBegin()const
+		{
+			return ConstReverseIterator(CEnd());
+		}
+		ConstReverseIterator CREnd()const
+		{
+			return ConstReverseIterator(CBegin());
+		}
 
+		size_t Size()const
+		{
+			size_t
+		}
 	private:
 		void CreateHead()
 		{
