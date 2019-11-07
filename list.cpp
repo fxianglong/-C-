@@ -232,21 +232,21 @@ namespace fxl
 		{}
 		Ref operator*()
 		{
-			Iterator temp = _it;
-			return *(--temp);
+			Iterator temp = _it; temp--;
+			return *(temp);
 		}
 		Ptr operator->()
 		{
 			return &operator*();
 		}
-		Self operator++()
+		Self& operator++()
 		{
 			--_it;
 			return *this;
 		}
 		Self operator++(int)
 		{
-			Iterator temp(*this);
+			Iterator temp(_it);
 			--_it;
 			return temp;
 		}
@@ -257,9 +257,9 @@ namespace fxl
 		}
 		Self operator--(int)
 		{
-			Iterator temp(*this);
+			Iterator temp(_it);
 			++_it;
-			return templ;
+			return temp;
 		}
 		bool operator!=(const Self&s)
 		{
@@ -280,7 +280,7 @@ namespace fxl
 		typedef Node* PNode;
 	public:
 		typedef ListIterator<T, T&, T*> Iterator;
-		typedef ListIterator<T, const T&, const T*> ConstIterator;
+		typedef ListIterator<T, const T&, const T&> ConstIterator;
 		typedef ListReverseIterator<T, T&, T*, Iterator>ReverseIterator;
 		typedef ListReverseIterator<T, const T&, const T*, ConstIterator>ConstReverseIterator;
 	public:
@@ -307,7 +307,7 @@ namespace fxl
 		List(const List<T>&l)
 		{
 			CreateHead();
-			List<T> temp = (l.CBegin(), l.CEnd());
+			List<T> temp(l.CBegin(), l.CEnd());
 			this->Swap(temp);
 		}
 		List<T>& operator=(const List<T>& l)
@@ -360,7 +360,118 @@ namespace fxl
 
 		size_t Size()const
 		{
-			size_t
+			size_t count = 0;
+			PNode pCur = _pHead->_pNext;;
+			while (pCur != _pHead)
+			{
+				count++;
+				pCur = pCur->_pNext;
+			}
+			return count;
+		}
+		bool Empty()const{
+			return _pHead->_pNext == _pHead;
+		}
+		void Resize(size_t newSize, const T&val = T())
+		{
+			size_t oldSize = Size();
+			if (newSize >= oldSize)
+			{
+				for (size_t i = oldSize; i < newSize; i++)
+					PushBack(val);
+			}
+			else
+			{
+				for (size_t i = newSize; i < oldSize; i++)
+					PopBack();
+			}
+		}
+		T&Front()
+		{
+			return _pHead->_pNext->_val;
+		}
+		const T&Front()const
+		{
+			return _pHead->_pNext->_val;
+		}
+		T&Back()
+		{
+			return _pHead->_pPre->_val;
+		}
+		const T&Back()const
+		{
+			return _pHead->_pPre->_val;
+		}
+		void PushBack(const T&val)
+		{
+			PNode pnewnode = new Node(val);
+			pnewnode->_pNext = _pHead;
+			pnewnode->_pPre = _pHead->_pPre;
+			_pHead->_pPre = pnewnode;
+			pnewnode->_pPre->_pNext = pnewnode;
+		}
+		void PoPback()
+		{
+			PNode pdel = _pHead->_pPre;
+			if (pdel != _pHead)
+			{
+				_pHead->_pPre = pdel->_pPre;
+				_pdel->_pPre->_pNext = _pHead;
+				delete pdel;
+			}
+		}
+		void PushBackFront(const T&val)
+		{
+			PNode pnewNode = new Node(val);
+			pnewNode->_pNext = _pHead->_pNext;
+			pnewNode->_pPre = _pHead;
+			_pHead->_pPre = pnewNode;
+			pnewNode->_pNext->_pPre = pnewNode;
+		}
+		void PopFront()
+		{
+			PNode pDel = _pHead->_pNext;
+			if (pDel != _pHead)
+			{
+				_pHead->_pNext = pDel->_pNext;
+				pDel->_pNext->_pPre = _pHead;
+				delete pDel;
+			}
+		}
+		Iterator Insert(Iterator pos, const T&val)
+		{
+			PNode pnewNode = new Node(val);
+			PNode pCur = pos._pNode;
+			pnewNode->_pPre = pCur->_pPre;
+			pnewNode->_pNext = pCur;
+			pnewNode->_pPre->_pNext = pnewNode;
+			pCur->_pPre = pnewNode;
+			return Iterator(pnewNode);
+		}
+		Iterator Erase(Iterator pos)
+		{
+			PNode pDel = pos._pNode;
+			PNode pRet = pDel->_pNext;
+			pDel->_pPre->_pNext = pDel->_pNext;
+			pDel->_pNext->_pPre = pDel->_pPre;
+			delete pDel;
+			return Iterator(pRet);
+		}
+		void Clear()
+		{
+			PNode pCur = _pHead->_pNext;
+			while (pCur != _pHead)
+			{
+				_pHead->_pNext = pCur->_pNext;
+				delete pCur;
+				pCur = _pHead->_pNext;
+			}
+			_pHead->_pNext = _pHead;
+			_pHead->_pPre = _pHead;
+		}
+		void Swap(List<T>& l)
+		{
+			swap(_pHead, l._pHead);
 		}
 	private:
 		void CreateHead()
@@ -372,4 +483,60 @@ namespace fxl
 	private:
 		PNode _pHead;
 	};
+}
+
+template<class T>
+void PrintfList(fxl::List<T> &l)
+{
+	auto it = l.Begin();
+	while (it != l.End())
+	{
+		cout << *it << " ";
+		it++;
+	}
+	cout << endl;
+}
+//template<class T>
+//void ReversePrintfList(const fxl::List<T> &l)
+//{
+//	auto it = l.CRBegin();
+//	while (it != l.CREnd())
+//	{
+//		cout << *it << " ";
+//		++it;
+//	}
+//	cout << endl;
+//}
+template<class T>
+void PrintListReverse(const fxl::List<T>& l)
+{
+	auto it = l.CRBegin();
+	while (it != l.CREnd())
+	{
+		cout << *it << " ";
+		++it;
+	}
+	cout << endl;
+}
+
+void TestList()
+{
+	fxl::List<int> l1;
+	fxl::List<int> l2(4, 2);
+	PrintfList(l2);
+	int array[] = { 1, 3, 4, 7, 8, 9, 2 };
+	fxl::List<int> l3(array, array + sizeof(array) / sizeof(array[0]));
+	PrintfList(l3);
+	fxl::List<int> l4(l3);
+	PrintfList(l4);
+	l1 = l4;
+	PrintfList(l1);
+	//ReversePrintfList(l1);
+	PrintListReverse(l1);
+}
+int main()
+{
+	TestList();
+	system("pause");
+	return 0;
 }
