@@ -232,8 +232,8 @@ namespace fxl
 		{}
 		Ref operator*()
 		{
-			Iterator temp = _it; temp--;
-			return *(temp);
+			Iterator temp = _it;
+			return *(--temp);
 		}
 		Ptr operator->()
 		{
@@ -383,7 +383,7 @@ namespace fxl
 			else
 			{
 				for (size_t i = newSize; i < oldSize; i++)
-					PopBack();
+					PoPback();
 			}
 		}
 		T&Front()
@@ -416,7 +416,7 @@ namespace fxl
 			if (pdel != _pHead)
 			{
 				_pHead->_pPre = pdel->_pPre;
-				_pdel->_pPre->_pNext = _pHead;
+				pdel->_pPre->_pNext = _pHead;
 				delete pdel;
 			}
 		}
@@ -425,7 +425,7 @@ namespace fxl
 			PNode pnewNode = new Node(val);
 			pnewNode->_pNext = _pHead->_pNext;
 			pnewNode->_pPre = _pHead;
-			_pHead->_pPre = pnewNode;
+			_pHead->_pNext = pnewNode;
 			pnewNode->_pNext->_pPre = pnewNode;
 		}
 		void PopFront()
@@ -532,11 +532,82 @@ void TestList()
 	l1 = l4;
 	PrintfList(l1);
 	//ReversePrintfList(l1);
-	PrintListReverse(l1);
+	//PrintListReverse(l1);
 }
+
+void TestList2()
+{
+	// 测试PushBack与PopBack
+	fxl::List<int> l;
+	l.PushBack(1);
+	l.PushBack(2);
+	l.PushBack(3);
+	PrintfList(l);
+	l.PoPback();
+	l.PoPback();
+	PrintfList(l);
+	l.PoPback();
+	cout << l.Size() << endl;
+	// 测试PushFront与PopFront
+	l.PushBackFront(1);
+	l.PushBackFront(2);
+	l.PushBackFront(3);
+	PrintfList(l);
+	l.PopFront();
+	l.PopFront();
+	PrintfList(l);
+	l.PopFront();
+	cout << l.Size() << endl;
+}
+
+void TestList3()
+{
+	int array[] = { 1, 2, 3, 4, 5 };
+	fxl::List<int> l(array, array + sizeof(array) / sizeof(array[0]));
+	auto pos = l.Begin();
+	l.Insert(l.Begin(), 0);
+	PrintfList(l);
+
+	++pos;
+	l.Insert(pos, 2);
+	PrintfList(l);
+	l.Erase(l.Begin());
+	l.Erase(pos);
+	PrintfList(l);
+	// pos指向的节点已经被删除，pos迭代器失效
+	cout << *pos << endl;
+	auto it = l.Begin();
+	while (it != l.End())
+	{
+		it = l.Erase(it);
+	}
+	cout << l.Size() << endl;
+}
+
+void TestList4()
+{
+	int array[] = { 1, 2, 3, 4, 5 };
+	fxl::List<int> l1(array, array + sizeof(array) / sizeof(array[0]));
+	cout << l1.Size() << endl;
+	PrintfList(l1);
+	l1.Resize(10, 6);
+	cout << l1.Size() << endl;
+	PrintfList(l1);
+	l1.Resize(4);
+	cout << l1.Size() << endl;
+	PrintfList(l1);
+	fxl::List<int> l2(array, array + sizeof(array) / sizeof(array[0]));
+	PrintfList(l1);
+	PrintfList(l2);
+	l1.Swap(l2);
+	PrintfList(l1);
+	PrintfList(l2);
+	l2.Clear();
+	cout << l2.Size() << endl;
+}
 int main()
 {
-	TestList();
+	TestList4();
 	system("pause");
 	return 0;
 }
