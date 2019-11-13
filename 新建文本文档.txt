@@ -1,0 +1,158 @@
+线程池的实现：
+应用场景：
+	t=t1(线程创建的时间)+t2(任务处理的实现)+t3(线程销毁的时间)
+作用：
+1.避免大量线程的频繁创建与销毁带来的时间成本
+2.避免峰值压力下的线程创建过多导致资源耗尽的风险
+实现：一个以上的线程+线程的安全队列
+使用C++封装一个线程池类（固定数量线程的线程池），向外提供简单的线程池操作接口
+
+1.固定数量的线程  数量控制+初始化接口——创建线程……
+2.线程安全的任务队列
+
+任务类：
+typedef void (*TaskHandler)(int data);
+class ThreadTask{
+	int data;//要处理的数据
+	TaskHandler_handler;
+	public:
+		ThreadTask(int data,TaskHandler handler);
+		void Run(){_handler(_data);}
+		void* thr_start(void *arg){taskpop(tt);tt.Run();}//入口
+		
+}
+
+class ThreadPool{
+private:
+	int thr_num;
+	std::queue<ThreadTask> _task_queue;
+	pthread_mutex_t_mutex;
+	pthread_cond_t_cond_con;
+	pthread_cond_t_cond_pro;
+public:
+	ThreadPool(int max_thr=MAX_THR):thr_num(max_thr);
+	bool PoolInit()
+	bool TaskPush(ThreadTask &&tt);
+}
+
+
+#include<iostream>
+#include<queue>
+#include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+#include<pthread.h>
+typedef void (*TaskHandler)(int data);
+class ThreadTask{
+private:
+	int _data;
+	TaskHandler_handler;
+public:
+	ThreadTask(int data,TaskHandler handler):_data(data),
+	_handler(handler){};
+	void SetTask(int data,TaskHandler handler){
+	_data=data;
+	-handler=handler;
+	}
+	void Run(){
+		_handler(_data);
+	}
+};
+class ThreadPool{
+private:
+	int thr_num;//线程池线程的最大容量
+	std::queue<ThreadTask> _task_queue;//队列
+	pthread_mutex_t_mutex;//保护队列安全操作
+	pthread_cond_t_cond_con;
+	pthread_cond_t_cond_pro;
+private:
+	static void* thr_start(void *arg)
+	{
+		ThreadPool*pool=(ThreadPool*)arg;
+		while(1){
+			pthread_mutex_lock(&_mutex);
+			while(_task_queue.empty()){
+				pthread_cond_wait(&_cond_con,&_mutex);
+			}
+			ThreadTask tt;
+			tt=_task_queue.front();
+			_task_queue.pop();
+			pthread_mutex_unlock(&_mutex);
+			tt.Run();
+		}
+		return NULL;
+	}
+	public:
+	 
+		void ThreadLock(){
+			pthread_mutex_lock(&_mutex);
+		}
+		void ThreadUnLock(){
+			pthread_mutex_unlock(&_mutex);
+		}
+public:
+	ThreadPool(int max_thr=MAX_THR):thr_num(max_thr){};
+	bool PoolInit(){
+		for(int i=0;i<thr_num;i++)
+		{
+			pthread_t tid;
+			int ret=pthread_create(&tid,NULL,thr_start,(void*)this)
+			if(ret!=0){
+			std::cerr<<"sreate thread error/n";
+			return false;
+			}
+			pthread_datach(tid);
+			}
+		pthread_mutex_init(&_mutex,NUll);
+		pthread_cond_init(&_cond_con,NULL);
+		pthread_cond_init(&_cond_pro,NULL);
+		return true;
+	}
+	bool TaskPush(ThreadTask &&tt){
+		pthread_mutex_lock(&_mutex);
+		_task_queue.push(tt);
+		pthread_mutex_unlock(&_mutex);
+		pthread_cond_
+	}
+}
+void test()
+{
+	srand(data);
+	int sec=rand()%5;
+	printf("thread:%p--get data:%d,sleep d sec\n",pthread_self(),data,sec)
+	{
+	sleep(sec);}
+}
+int main()
+{
+	for(int i=0;i<10;i++)
+	{
+		ThreadTask task(i,test){
+			ThreadTask task(i,test);
+			pool.TaskPush(task);
+		}while(1)
+		{
+			
+		}
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
